@@ -129,32 +129,25 @@ class InvokeAIViewer(App):
     Input {
         width: 1fr;
         margin: 0 1 0 0;
-        background: $primary;
-        color: $text;
-        text-style: bold;
-        height: 1;
+        background: #333333;
+        color: #ffffff !important;
+        height: 3;
         padding: 0 1;
     }
 
-    Input > .input--cursor {
-        background: #ff8800;
-        color: #000000;
-        text-style: bold;
+    #input_name, #input_type, #input_subtype, #input_triggers {
+        background: #333333 !important;
+        color: #ffffff !important;
+        height: 3;
     }
 
     Input > .input--placeholder {
-        color: #666666;
+        color: gray !important;
     }
 
     Input:focus {
         border: tall #ff8800;
-        background: $primary;
-        color: white;
-        text-style: bold;
-    }
-
-    Input:focus > .input--placeholder {
-        color: #888888;
+        color: white !important;
     }
 
     DataTable {
@@ -219,7 +212,7 @@ class InvokeAIViewer(App):
                 yield Input(placeholder="filter...", id="input_name")
                 yield Static("Type:", classes="filter-label")
                 yield Input(placeholder="filter...", id="input_type")
-                yield Static("Subtype:", classes="filter-label")
+                yield Static("Base Model:", classes="filter-label")
                 yield Input(placeholder="filter...", id="input_subtype")
                 yield Static("Triggers:", classes="filter-label")
                 yield Input(placeholder="filter...", id="input_triggers")
@@ -237,7 +230,7 @@ class InvokeAIViewer(App):
         table = self.query_one("#models_table", DataTable)
         table.add_column("Model ▼", width=40)
         table.add_column("Type", width=12)
-        table.add_column("Subtype", width=12)
+        table.add_column("Base Model", width=12)
         table.add_column("Triggers", width=36)
         table.cursor_type = "row"
 
@@ -269,7 +262,7 @@ class InvokeAIViewer(App):
             self.sort_reverse = False
 
         # Update column headers with sort indicator
-        headers = ["Model", "Type", "Subtype", "Triggers"]
+        headers = ["Model", "Type", "Base Model", "Triggers"]
         sort_indicator = " ▼" if not self.sort_reverse else " ▲"
         headers[event.column_index] = headers[event.column_index] + sort_indicator
 
@@ -277,7 +270,7 @@ class InvokeAIViewer(App):
         table.clear(columns=True)
         table.add_column(headers[0], width=40)  # Model - 40%
         table.add_column(headers[1], width=12)  # Type - 12%
-        table.add_column(headers[2], width=12)  # Subtype - 12%
+        table.add_column(headers[2], width=12)  # Base Model - 12%
         table.add_column(headers[3], width=36)  # Triggers - 36%
 
         # Re-sort and update table
