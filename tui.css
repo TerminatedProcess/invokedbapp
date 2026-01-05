@@ -1,0 +1,271 @@
+/* Textual CSS for Model Hub TUI - Clean and Simple */
+
+#main-container {
+    height: 100%;
+    width: 100%;
+}
+
+#content {
+    height: 100%;
+    width: 100%;
+}
+
+#status-bar {
+    height: 3;
+    background: black;
+    color: white;
+    padding: 1;
+    text-align: left;
+}
+
+#filter-section {
+    height: 5;
+    width: 100%;
+    background: #333333;
+    padding: 0;
+}
+
+#filter-row {
+    height: 5;
+    width: 100%;
+    align: left middle;
+    padding: 0;
+}
+
+/* Simple filter input styling */
+#filter-filename {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+    border: solid black;
+    height: 3;
+    margin: 0 1 0 0;
+    width: 25%;
+}
+
+#filter-model-type {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+    border: solid black;
+    height: 3;
+    margin: 0 1 0 0;
+    width: 25%;
+}
+
+#filter-base-model {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+    border: solid black;
+    height: 3;
+    margin: 0 1 0 0;
+    width: 25%;
+}
+
+#filter-model-variant {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+    border: solid black;
+    height: 3;
+    margin: 0 1 0 0;
+    width: 25%;
+}
+
+Input:focus {
+    background: $primary;
+    color: white;
+    text-style: bold;
+    border: solid black;
+}
+
+#model-table {
+    height: 1fr;
+    width: 100%;
+}
+
+/* Clean table styling */
+DataTable {
+    background: $surface;
+    border: none;
+    outline: none;
+}
+
+DataTable > .datatable--header {
+    background: $primary;
+    color: $text;
+    text-style: bold;
+}
+
+DataTable > .datatable--cursor {
+    background: $accent;
+    color: $text;
+}
+
+DataTable > .datatable--hover {
+    background: $surface-lighten-1;
+}
+
+/* Color coding for model types */
+DataTable .lora {
+    color: #00ff00;
+}
+
+DataTable .checkpoint {
+    color: #ffaa00;
+}
+
+DataTable .main {
+    color: #ffaa00;
+}
+
+DataTable .vae {
+    color: #00aaff;
+}
+
+DataTable .controlnet {
+    color: #ff6666;
+}
+
+DataTable .embedding {
+    color: #ff88ff;
+}
+
+DataTable .unknown {
+    color: #cccccc;
+}
+
+/* LFS pointer indicator */
+.lfs-pointer {
+    color: #ff4444;
+    text-style: bold;
+}
+
+/* Model Detail Screen Styling */
+#detail-container {
+    height: 100%;
+    width: 100%;
+}
+
+#summary-container {
+    height: 1fr;
+    width: 100%;
+    padding: 1;
+    overflow-y: auto;
+}
+
+#summary-header-row {
+    height: auto;
+    width: 100%;
+    align: left middle;
+    margin-bottom: 1;
+}
+
+#summary-header {
+    text-style: bold;
+    color: $accent;
+    width: 1fr;
+}
+
+.delete-button {
+    width: auto;
+    height: 1;
+    min-width: 18;
+    background: #dc2626;
+    color: white;
+    border: round #991b1b;
+    margin-left: 2;
+    text-align: center;
+    text-style: bold;
+}
+
+.delete-button:hover {
+    background: #b91c1c;
+    border: round #ef4444;
+    color: #fef2f2;
+}
+
+.delete-button:focus {
+    background: #059669;
+    border: round #10b981;
+    color: white;
+}
+
+/* Actions header CSS removed - no longer needed */
+
+#model-summary {
+    background: $surface;
+    color: $text;
+    padding: 1;
+    border: none;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Copy button and data row styling */
+.data-row {
+    height: auto;
+    width: 100%;
+    align: left middle;
+    margin: 0 0 1 0;
+}
+
+.data-label {
+    width: 15;
+    color: $accent;
+    text-style: bold;
+}
+
+.data-value {
+    width: 1fr;
+    color: $text;
+    padding: 0 1;
+}
+
+/* Prevent hover effects that cause shifting */
+.data-value:hover {
+    background: transparent;
+    color: $text;
+}
+
+Static:hover {
+    background: transparent;
+}
+
+.data-input {
+    width: 1fr;
+    height: 1;
+    background: $surface-lighten-1;
+    color: $text;
+    border: none;
+    padding: 0 1;
+}
+
+/* Field buttons styled to look like text fields but with tooltips */
+.field-button {
+    width: 1fr;
+    height: 1;
+    background: transparent;
+    color: $text;
+    border: none;
+    padding: 0 1;
+    text-align: left;
+    text-style: none;
+    content-align: left middle;
+}
+
+.field-button:hover {
+    background: $surface-lighten-1;
+    color: $text;
+    text-align: left;
+    content-align: left middle;
+}
+
+.field-button:focus {
+    background: $surface-lighten-2;
+    color: $text;
+    text-align: left;
+    content-align: left middle;
+}

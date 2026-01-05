@@ -75,8 +75,12 @@ class ModelDatabase:
             raise RuntimeError(f"Database error: {e}")
 
 
-def load_config() -> Path:
-    """Load database path from config.yaml."""
+def load_config() -> tuple[Path, Path]:
+    """Load database path from config.yaml.
+
+    Returns:
+        tuple[Path, Path]: (invokeai_data_path, database_path)
+    """
     config_path = Path("config.yaml")
     if not config_path.exists():
         raise FileNotFoundError("config.yaml not found")
@@ -88,7 +92,10 @@ def load_config() -> Path:
     if not invokeai_data_path:
         raise ValueError("invokeai_data_path not found in config.yaml")
 
-    return Path(invokeai_data_path) / "databases" / "invokeai.db"
+    data_path = Path(invokeai_data_path)
+    db_path = data_path / "databases" / "invokeai.db"
+
+    return data_path, db_path
 
 
 class InvokeAIViewer(App):
@@ -122,26 +129,32 @@ class InvokeAIViewer(App):
     Input {
         width: 1fr;
         margin: 0 1 0 0;
-        background: #333;
-        color: #ffffff;
+        background: $primary;
+        color: $text;
+        text-style: bold;
         height: 1;
-    }
-
-    Input > .input--placeholder {
-        color: #666;
+        padding: 0 1;
     }
 
     Input > .input--cursor {
-        color: #ffffff;
         background: #ff8800;
+        color: #000000;
+        text-style: bold;
+    }
+
+    Input > .input--placeholder {
+        color: #666666;
     }
 
     Input:focus {
         border: tall #ff8800;
+        background: $primary;
+        color: white;
+        text-style: bold;
     }
 
     Input:focus > .input--placeholder {
-        color: #888;
+        color: #888888;
     }
 
     DataTable {
@@ -189,7 +202,7 @@ class InvokeAIViewer(App):
 
     def __init__(self):
         super().__init__()
-        self.db_path = load_config()
+        self.data_path, self.db_path = load_config()
         self.db = ModelDatabase(self.db_path)
         self.all_models = []
         self.filtered_models = []
@@ -371,7 +384,9 @@ class InvokeAIViewer(App):
         for model in self.filtered_models:
             model_path = model["path"]
             if model_path and model_path.strip():
-                symlinks.append(f'ln -s "{model_path}" .')
+                # Construct full path: data_path / model_path
+                full_path = self.data_path / model_path
+                symlinks.append(f'ln -s "{full_path}" .')
 
         if not symlinks:
             self.update_status_text("No valid model paths found", error=True)
