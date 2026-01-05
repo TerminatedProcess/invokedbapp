@@ -383,9 +383,10 @@ class InvokeAIViewer(App):
         symlinks = []
         for model in self.filtered_models:
             model_path = model["path"]
+            model_type = model["type"]
             if model_path and model_path.strip():
-                # Construct full path: data_path / model_path
-                full_path = self.data_path / model_path
+                # Construct full path: data_path / models / type / path
+                full_path = self.data_path / "models" / model_type / model_path
                 symlinks.append(f'ln -s "{full_path}" .')
 
         if not symlinks:
