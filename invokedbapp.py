@@ -60,8 +60,12 @@ class ModelDatabase:
                     except (json.JSONDecodeError, TypeError):
                         triggers = []
 
+                # Extract file extension from path and append to name
+                ext = Path(model_path).suffix if model_path else ""
+                display_name = f"{model_name or 'Unknown'}{ext}"
+
                 models.append({
-                    "name": model_name or "Unknown",
+                    "name": display_name,
                     "type": model_type or "Unknown",
                     "subtype": model_base or "Unknown",
                     "triggers": ", ".join(triggers) if triggers else "",
