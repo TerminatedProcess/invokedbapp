@@ -191,7 +191,6 @@ class InvokeAIViewer(App):
     filter_name = reactive("")
     filter_type = reactive("")
     filter_subtype = reactive("")
-    filter_triggers = reactive("")
 
     def __init__(self):
         super().__init__()
@@ -214,8 +213,6 @@ class InvokeAIViewer(App):
                 yield Input(placeholder="filter...", id="input_type")
                 yield Static("Base Model:", classes="filter-label")
                 yield Input(placeholder="filter...", id="input_subtype")
-                yield Static("Triggers:", classes="filter-label")
-                yield Input(placeholder="filter...", id="input_triggers")
 
         yield DataTable(id="models_table")
 
@@ -226,12 +223,11 @@ class InvokeAIViewer(App):
 
     def on_mount(self) -> None:
         """Initialize the app after mounting."""
-        # Setup table with percentage-based column widths
+        # Setup table with fixed column widths
         table = self.query_one("#models_table", DataTable)
-        table.add_column("Model ▼", width=40)
-        table.add_column("Type", width=12)
-        table.add_column("Base Model", width=12)
-        table.add_column("Triggers", width=36)
+        table.add_column("Model ▼", width=120)
+        table.add_column("Type", width=24)
+        table.add_column("Base Model", width=16)
         table.cursor_type = "row"
 
         # Load models
@@ -248,7 +244,7 @@ class InvokeAIViewer(App):
         table = self.query_one("#models_table", DataTable)
 
         # Map column index to field name
-        column_map = {0: "name", 1: "type", 2: "subtype", 3: "triggers"}
+        column_map = {0: "name", 1: "type", 2: "subtype"}
         selected_column = column_map.get(event.column_index)
 
         if selected_column is None:
@@ -262,16 +258,15 @@ class InvokeAIViewer(App):
             self.sort_reverse = False
 
         # Update column headers with sort indicator
-        headers = ["Model", "Type", "Base Model", "Triggers"]
+        headers = ["Model", "Type", "Base Model"]
         sort_indicator = " ▼" if not self.sort_reverse else " ▲"
         headers[event.column_index] = headers[event.column_index] + sort_indicator
 
         # Clear and re-add columns with consistent widths
         table.clear(columns=True)
-        table.add_column(headers[0], width=40)  # Model - 40%
-        table.add_column(headers[1], width=12)  # Type - 12%
-        table.add_column(headers[2], width=12)  # Base Model - 12%
-        table.add_column(headers[3], width=36)  # Triggers - 36%
+        table.add_column(headers[0], width=120)  # Model
+        table.add_column(headers[1], width=24)   # Type
+        table.add_column(headers[2], width=16)   # Base Model
 
         # Re-sort and update table
         self.apply_filters()
@@ -286,8 +281,6 @@ class InvokeAIViewer(App):
             self.filter_type = event.value.lower()
         elif input_id == "input_subtype":
             self.filter_subtype = event.value.lower()
-        elif input_id == "input_triggers":
-            self.filter_triggers = event.value.lower()
 
         self.apply_filters()
 
@@ -303,9 +296,6 @@ class InvokeAIViewer(App):
 
         if self.filter_subtype:
             filtered = [m for m in filtered if self.filter_subtype in m["subtype"].lower()]
-
-        if self.filter_triggers:
-            filtered = [m for m in filtered if self.filter_triggers in m["triggers"].lower()]
 
         # Sort the filtered results
         filtered.sort(key=lambda x: x[self.sort_column].lower(), reverse=self.sort_reverse)
@@ -323,8 +313,7 @@ class InvokeAIViewer(App):
             table.add_row(
                 model["name"],
                 model["type"],
-                model["subtype"],
-                model["triggers"]
+                model["subtype"]
             )
 
     def update_status(self) -> None:
@@ -357,12 +346,10 @@ class InvokeAIViewer(App):
         self.query_one("#input_name", Input).value = ""
         self.query_one("#input_type", Input).value = ""
         self.query_one("#input_subtype", Input).value = ""
-        self.query_one("#input_triggers", Input).value = ""
 
         self.filter_name = ""
         self.filter_type = ""
         self.filter_subtype = ""
-        self.filter_triggers = ""
 
         self.apply_filters()
         self.update_status_text("Filters reset")
